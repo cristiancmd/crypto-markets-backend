@@ -48,7 +48,7 @@ export class PriceUpdater extends CronJob {
             },
 
 
-            cronTime: '*/30 * * * * *',
+            cronTime: '*/300 * * * * *',
             start: true,
         });
     }
