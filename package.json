@@ -36,7 +36,9 @@
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build",
     "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
-    "start:watch:debug": "cross-env DEBUG=loopback:connector:*,loopback:rest:* npm run start:watch"
+    "start:watch:debug": "cross-env DEBUG=loopback:connector:*,loopback:rest:* npm run start:watch",
+    "postinstall": "npm run build",
+    "start:prod":"node dist/index.js"
   },
   "repository": {
     "type": "git",
