@@ -38,7 +38,7 @@
     "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
     "start:watch:debug": "cross-env DEBUG=loopback:connector:*,loopback:rest:* npm run start:watch",
     "postinstall": "npm run build",
-    "start:prod":"node dist/index.js"
+    "start:prod": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -63,7 +63,8 @@
     "dotenv": "^12.0.3",
     "loopback-connector-mongodb": "^5.6.0",
     "loopback-connector-rest": "^3.7.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.0.0",
