@@ -27,7 +27,8 @@ export class MyCronJob extends CronJob {
             },
 
             runOnInit: true,
-            cronTime: '*/600 * * * * *',
+            cronTime: '*/2 * * * *',
+
             start: true,
         });
     }

@@ -1,3 +1,5 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -11,8 +13,19 @@ import {
   getModelSchemaRef, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
+import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {Credentials, User} from '../models';
 import {UserRepository} from '../repositories';
+
+export const UserProfileSchema = {
+  type: 'object',
+  required: ['id'],
+  properties: {
+    id: {type: 'string'},
+    email: {type: 'string'},
+    name: {type: 'string'},
+  },
+};
 
 export class UserController {
   constructor(
@@ -39,6 +52,31 @@ export class UserController {
     user: Omit<User, 'id'>,
   ): Promise<User> {
     return this.userRepository.create(user);
+  }
+
+  @get('/greet', {
+    responses: {
+      '200': {
+        description: 'Greet the logged in user',
+        content: {
+          'application/json': {
+            // schema: getModelSchemaRef(Credentials),
+            schema: UserProfileSchema,
+          },
+        },
+      },
+    },
+  })
+  @authenticate({strategy: 'auth0-jwt', options: {scopes: ['greet']}})
+  async greet(
+    @inject(SecurityBindings.USER)
+    currentUserProfile: UserProfile,
+  ): Promise<Partial<UserProfile>> {
+    currentUserProfile.id = currentUserProfile[securityId];
+    const user: Partial<UserProfile> = {...currentUserProfile};
+    console.log('-- usuario:  ', user);
+    delete user[securityId];
+    return user;
   }
 
   // login de usuario
@@ -95,6 +133,7 @@ export class UserController {
       },
     },
   })
+  @authenticate({strategy: 'auth0-jwt', options: {scopes: ['users']}})
   async find(
     @param.filter(User) filter?: Filter<User>,
   ): Promise<User[]> {

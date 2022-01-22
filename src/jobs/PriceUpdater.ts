@@ -19,7 +19,7 @@ export class PriceUpdater extends CronJob {
             onTick: async () => {
                 const coins: Coin[] = await coinRepository.find();
                 const precios: Precio[] = await precioRepository.find(
-                    {where: {date: {gt: new Date(Date.now() - 300000)}}});
+                    {where: {date: {gt: new Date(Date.now() - 60000)}}});
 
                 console.log(new Date(), 'Ejecutando price updater');
                 // console.log(coins)
@@ -48,7 +48,7 @@ export class PriceUpdater extends CronJob {
             },
 
 
-            cronTime: '*/300 * * * * *',
+            cronTime: '*/1 * * * *',
             start: true,
         });
     }

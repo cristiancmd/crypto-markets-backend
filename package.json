@@ -53,6 +53,8 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^8.0.1",
+    "@loopback/authentication-jwt": "^0.10.1",
     "@loopback/boot": "^4.0.0",
     "@loopback/core": "^3.0.0",
     "@loopback/cron": "^0.7.0",
@@ -60,7 +62,11 @@
     "@loopback/rest": "^11.0.0",
     "@loopback/rest-explorer": "^4.0.0",
     "@loopback/service-proxy": "^4.0.0",
+    "axios": "^0.25.0",
     "dotenv": "^12.0.3",
+    "express-jwt": "^6.1.0",
+    "express-jwt-authz": "^2.4.1",
+    "jwks-rsa": "^2.0.5",
     "loopback-connector-mongodb": "^5.6.0",
     "loopback-connector-rest": "^3.7.0",
     "tslib": "^2.0.0",
@@ -70,6 +76,7 @@
     "@loopback/build": "^8.0.0",
     "@loopback/eslint-config": "^12.0.0",
     "@loopback/testlab": "^4.0.0",
+    "@types/express-jwt": "^6.0.4",
     "@types/node": "^10.17.60",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",

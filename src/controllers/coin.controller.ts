@@ -1,32 +1,28 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Coin} from '../models';
 import {CoinRepository, PrecioRepository} from '../repositories';
 
+
 export class CoinController {
   constructor(
     @repository(CoinRepository)
-    public coinRepository : CoinRepository,
+    public coinRepository: CoinRepository,
     @repository(PrecioRepository)
-    public precioRepository : PrecioRepository,
-  ) {}
+    public precioRepository: PrecioRepository,
+  ) { }
 
   @post('/coins')
   @response(200, {
@@ -72,6 +68,7 @@ export class CoinController {
       },
     },
   })
+  @authenticate({strategy: 'auth0-jwt'})
   async find(
     @param.filter(Coin) filter?: Filter<Coin>,
   ): Promise<Coin[]> {
