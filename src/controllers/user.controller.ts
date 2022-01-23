@@ -76,7 +76,7 @@ export class UserController {
     const user: Partial<UserProfile> = {...currentUserProfile};
     console.log('-- usuario:  ', user);
     delete user[securityId];
-    return user;
+    return user.sub;
   }
 
   // login de usuario

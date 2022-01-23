@@ -30,10 +30,10 @@ const tokenReq = {
 };
 
 async function main() {
-  let res = await axios(tokenReq);
-  console.log(res.data);
+  // let res = await axios(tokenReq);
+  // console.log(res.data);
 
-  // let token = 'Bearer eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kZXYtbnExNWo4Y3AudXMuYXV0aDAuY29tLyJ9..DKL3XgbRoCFIphaU.YCiYos9qwyoMB6pmonjJ5pXpHRqoUtn_dKmQI-T5QyyrHa7Lm11FJodVKiL0Jy8cYzX0AfgiwTJ5XkC3hi0MunIPDWPjqcyb9Jw_nF4BPCCMJHUK32JeWDm5YPkg_TdHuNX4LRRJUa4PdgOrxN58dHeYJaHt6EHhMCOA7E5ESI7IGRep6p8wWX42_vkoPC-rWck63BI1CMB3QjtLh5Au-hBqrOEi7m-MPe3eN9hIaaO2dHTCYkOEXlzPaLcBhTqFFQBFXbdRrd43S0mqiHA6wTaKQnfqClPEvVPkKenxPd2pDWvgaLaWsPpHgS0QAZE_xEH9jju0vadB48oCElLyTek.cuoCYQjYr189PVi1L3gMSQ'
+  let token = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkRVMkVObHN1TnR2UkdrUWNXdkpaVyJ9.eyJpc3MiOiJodHRwczovL2Rldi1ucTE1ajhjcC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjFlOWIzZDhiMTM5MmUwMDY5OWJhZTFjIiwiYXVkIjpbInRlc3QtYXBpLWlhdyIsImh0dHBzOi8vZGV2LW5xMTVqOGNwLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NDI4MjI3NTEsImV4cCI6MTY0MjkwOTE1MSwiYXpwIjoiM0JBdWR2bE9XVkJ2dGdpUFhnSWJsTGh0ek9SS1o2VDgiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOltdfQ.OKhSa9zJohCyLFS__nKGpggD4YveL9sSi_TMVMYpQfT8O98Q4R_Fix4Ue7hr8ctlq72PkrL_elfrE31b_66eVywK3a2x22E2DnESXpEGZ0JJiVG_4VwHOqgQgJjlqZ5IkhFmnydSUdqixcxbR4fmidNpEoBsqeTIQNTqNge_dpYYGMW4CCGdkG258WpoLvw8o-bt11aF5_v8IZXB_taB1l0jwA15hXtxm9YCKcFBSBF69VpYi1-NcA8zD4TdTkZpMh5M6KezH_HoPheefzIDIfWbF84dg0XlqmVBulIXP6uk8VvZpdct2Kt4yHTlTQiBoUCngw8LW1TrbBc6g-P2-A'
 
 
   /**
@@ -43,8 +43,8 @@ async function main() {
     method: 'GET',
     url: 'http://localhost:3000/greet',
     headers: {
-      authorization: `Bearer ${res.data.access_token}`,
-      // authorization: token,
+      // authorization: `Bearer ${res.data.access_token}`,
+      authorization: token,
     },
   };
 

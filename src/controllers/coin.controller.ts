@@ -1,4 +1,3 @@
-import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -68,7 +67,7 @@ export class CoinController {
       },
     },
   })
-  @authenticate({strategy: 'auth0-jwt'})
+  // @authenticate({strategy: 'auth0-jwt'})
   async find(
     @param.filter(Coin) filter?: Filter<Coin>,
   ): Promise<Coin[]> {
