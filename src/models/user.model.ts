@@ -1,4 +1,4 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {Coin} from './coin.model';
 import {UserCoin} from './user-coin.model';
 
@@ -6,7 +6,7 @@ import {UserCoin} from './user-coin.model';
 export class User extends Entity {
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   name: string;
 
@@ -19,7 +19,7 @@ export class User extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   username: string;
 
@@ -33,6 +33,11 @@ export class User extends Entity {
     type: 'string',
   })
   email?: string;
+
+  @property({
+    type: 'string',
+  })
+  sub?: string;
 
   @hasMany(() => Coin, {through: {model: () => UserCoin}})
   usercoins: Coin[];

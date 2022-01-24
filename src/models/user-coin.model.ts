@@ -19,6 +19,16 @@ export class UserCoin extends Entity {
   })
   coinId?: string;
 
+  @property({
+    type: 'number',
+  })
+  max?: number;
+
+  @property({
+    type: 'number',
+  })
+  min?: number;
+
   constructor(data?: Partial<UserCoin>) {
     super(data);
   }

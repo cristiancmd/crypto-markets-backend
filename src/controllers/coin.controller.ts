@@ -14,7 +14,6 @@ import {
 import {Coin} from '../models';
 import {CoinRepository, PrecioRepository} from '../repositories';
 
-
 export class CoinController {
   constructor(
     @repository(CoinRepository)
@@ -69,8 +68,10 @@ export class CoinController {
   })
   // @authenticate({strategy: 'auth0-jwt'})
   async find(
+    // @inject(SecurityBindings.USER) currentUserProfile: UserProfile,
     @param.filter(Coin) filter?: Filter<Coin>,
   ): Promise<Coin[]> {
+    // console.log(currentUserProfile);
     return this.coinRepository.find(filter);
   }
 

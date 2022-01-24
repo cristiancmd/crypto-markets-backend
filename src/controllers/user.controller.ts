@@ -74,12 +74,17 @@ export class UserController {
   ): Promise<Partial<UserProfile>> {
     currentUserProfile.id = currentUserProfile[securityId];
     const user: Partial<UserProfile> = {...currentUserProfile};
-    console.log('-- usuario:  ', user);
+    console.log('-- usuario:  ', currentUserProfile);
     delete user[securityId];
-    return user.sub;
+
+    // const cadena = user.sub.split("|")[1] || user.sub.split("|")[0];
+    console.log(currentUserProfile['https://example.com/email']);
+    return user;
   }
 
-  // login de usuario
+
+
+  // login de usuario     **depcrecado**
   @post('/login')
   @response(200, {
     description: 'Identificacion de usuario',

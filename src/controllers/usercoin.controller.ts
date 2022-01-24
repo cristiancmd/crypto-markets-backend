@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {UserCoin} from '../models';
 import {UserCoinRepository} from '../repositories';
@@ -23,8 +17,8 @@ import {UserCoinRepository} from '../repositories';
 export class UsercoinController {
   constructor(
     @repository(UserCoinRepository)
-    public userCoinRepository : UserCoinRepository,
-  ) {}
+    public userCoinRepository: UserCoinRepository,
+  ) { }
 
   @post('/user-coins')
   @response(200, {
