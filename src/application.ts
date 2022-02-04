@@ -15,7 +15,9 @@ import path from 'path';
 import {JWTAuthenticationStrategy, KEY} from './authentication-strategies';
 import {JWTServiceProvider} from './authentication-strategies/jwt-service';
 import {MyCronJob} from './jobs/ConsLogger';
+import {MailNotifier} from './jobs/MailNotifierCheck';
 import {PriceUpdater} from './jobs/PriceUpdater';
+import {MailReseter} from './jobs/RemainingMailsDaylyReset';
 import {MySequence} from './sequence';
 
 
@@ -57,7 +59,11 @@ export class CryptomarketsApplication extends BootMixin(
     this.component(CronComponent);
     this.add(createBindingFromClass(MyCronJob));
 
-    this.add(createBindingFromClass(PriceUpdater))
+    this.add(createBindingFromClass(PriceUpdater));
+
+    this.add(createBindingFromClass(MailNotifier));
+
+    this.add(createBindingFromClass(MailReseter));
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

@@ -29,6 +29,17 @@ export class UserCoin extends Entity {
   })
   min?: number;
 
+  @property({
+    type: 'string',
+  })
+  email?: string;
+
+  @property({
+    type: 'boolean',
+
+  })
+  notified?: boolean;
+
   constructor(data?: Partial<UserCoin>) {
     super(data);
   }

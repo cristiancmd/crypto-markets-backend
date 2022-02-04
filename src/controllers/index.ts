@@ -8,3 +8,4 @@ export * from './user.controller';
 export * from './usercoin.controller';
 
 
+export * from './mercadopago.controller';

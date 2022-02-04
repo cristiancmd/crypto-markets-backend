@@ -1,8 +1,11 @@
 import {CronJob, cronJob} from '@loopback/cron';
 import {repository} from '@loopback/repository';
-import {Coin, Precio} from '../models';
+import {Coin, Precio, UserCoin} from '../models';
+import {UserRepository} from '../repositories';
+import {User} from './../models/user.model';
 import {CoinRepository} from './../repositories/coin.repository';
 import {PrecioRepository} from './../repositories/precio.repository';
+import {UserCoinRepository} from './../repositories/user-coin.repository';
 
 
 @cronJob()
@@ -10,7 +13,10 @@ export class PriceUpdater extends CronJob {
 
 
     constructor(@repository(CoinRepository) public coinRepository: CoinRepository,
-        @repository(PrecioRepository) public precioRepository: PrecioRepository
+        @repository(PrecioRepository) public precioRepository: PrecioRepository,
+        @repository(UserCoinRepository) public usercoinRepo: UserCoinRepository,
+        @repository(UserRepository) public userRepository: UserRepository,
+
 
     ) {
 
@@ -20,6 +26,7 @@ export class PriceUpdater extends CronJob {
                 const coins: Coin[] = await coinRepository.find();
                 const precios: Precio[] = await precioRepository.find(
                     {where: {date: {gt: new Date(Date.now() - 60000)}}});
+
 
                 console.log(new Date(), 'Ejecutando price updater');
                 // console.log(coins)
@@ -40,6 +47,7 @@ export class PriceUpdater extends CronJob {
                             const val = Number(Math.floor((sum / cant) * 100) / 100)
                             this.updateData(coin, val).catch(e => console.log(e))
                             console.log(val, ' ACTUALIZADO', coin.name)
+                            // this.notifyUsers(users, usercoins, coin, val).catch(e => console.error(e));
                         }
 
                     })
@@ -47,7 +55,7 @@ export class PriceUpdater extends CronJob {
 
             },
 
-
+            // runOnInit: true,
             cronTime: '*/1 * * * *',
             start: true,
         });
@@ -62,10 +70,33 @@ export class PriceUpdater extends CronJob {
         } catch (error) {
             console.log(error);
         }
-
-
     }
 
+    // async notifyUsers(users: User[], actcoin: Coin, val: number) {
+
+    //     users = users.filter(u => u.usercoins !== undefined);
+    //     // console.log(users);
+
+
+    //     const usrs = users.filter(u => u.usercoins.some(c => c.id === actcoin.id))
+
+    //     console.log('unoty : ', usrs);
+    //     console.log('moneda:', actcoin.name);
+    // }
+
+    async notifyUsers(users: User[], usercoins: UserCoin[], actcoin: Coin, val: number) {
+
+        // users = users.filter(u => u.usercoins !== undefined);
+        // // console.log(users);
+
+
+        // const usercoinsofusers = usercoins.filter(uc=> uc.id == actcoin.id && (uc.max && uc.max>val || (uc.min & uc.min<val )) )
+        // // const usrs = users.filter(u => u.usercoins.some(c => c.id === actcoin.id))
+
+
+        // console.log('unoty : ', usrs);
+        // console.log('moneda:', actcoin.name);
+    }
 
 
 

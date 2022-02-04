@@ -71,7 +71,7 @@ export class CoinController {
     // @inject(SecurityBindings.USER) currentUserProfile: UserProfile,
     @param.filter(Coin) filter?: Filter<Coin>,
   ): Promise<Coin[]> {
-    // console.log(currentUserProfile);
+
     return this.coinRepository.find(filter);
   }
 

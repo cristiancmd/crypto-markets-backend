@@ -69,6 +69,8 @@
     "jwks-rsa": "^2.0.5",
     "loopback-connector-mongodb": "^5.6.0",
     "loopback-connector-rest": "^3.7.0",
+    "mercadopago": "^1.5.12",
+    "nodemailer": "^6.7.2",
     "tslib": "^2.0.0",
     "xmlhttprequest": "^1.8.0"
   },

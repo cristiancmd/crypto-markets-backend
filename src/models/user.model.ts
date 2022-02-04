@@ -8,7 +8,7 @@ export class User extends Entity {
     type: 'string',
     required: false,
   })
-  name: string;
+  name?: string;
 
   @property({
     type: 'string',
@@ -21,7 +21,7 @@ export class User extends Entity {
     type: 'string',
     required: false,
   })
-  username: string;
+  username?: string;
 
   @property({
     type: 'string',
@@ -38,6 +38,27 @@ export class User extends Entity {
     type: 'string',
   })
   sub?: string;
+
+  @property({
+    type: 'number',
+    default: 1
+
+  })
+  remainingmails: number;
+
+  @property({
+    type: 'boolean',
+    default: false
+
+  })
+  premium?: boolean;
+
+  @property({
+    type: 'string'
+
+
+  })
+  picture?: string;
 
   @hasMany(() => Coin, {through: {model: () => UserCoin}})
   usercoins: Coin[];
