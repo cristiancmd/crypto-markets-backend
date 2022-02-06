@@ -1,10 +1,7 @@
 import {inject} from '@loopback/core';
 import {
-  Request,
-  RestBindings,
-  get,
-  response,
-  ResponseObject,
+  get, post, Request, requestBody, RequestContext, response,
+  ResponseObject, RestBindings
 } from '@loopback/rest';
 
 /**
@@ -38,7 +35,8 @@ const PING_RESPONSE: ResponseObject = {
  * A simple controller to bounce back http requests
  */
 export class PingController {
-  constructor(@inject(RestBindings.Http.REQUEST) private req: Request) {}
+  constructor(@inject(RestBindings.Http.REQUEST) private req: Request,
+    @inject(RestBindings.Http.CONTEXT) private requestCtx: RequestContext) { }
 
   // Map to `GET /ping`
   @get('/ping')
@@ -52,4 +50,54 @@ export class PingController {
       headers: Object.assign({}, this.req.headers),
     };
   }
+
+
+
+
+
+  @post('/test')
+  async test(@requestBody({content: {'text/plain': {}}}) texto: string
+
+  ): Promise<any> {
+
+
+    return await this.runScript(texto)
+
+
+  }
+
+
+  async runScript(script: string): Promise<number> {
+
+    try {
+      return await new Promise(resolve => eval("(function(returnCallback){" + script + "})")((data: any) => {
+
+        resolve(data);
+
+      }))
+
+    } catch (error) {
+      console.log('Test: error en script ----');
+
+    }
+    return 0;
+
+
+  };
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
