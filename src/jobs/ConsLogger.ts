@@ -48,7 +48,7 @@ export class MyCronJob extends CronJob {
             newPrecio.exchangeId = <string>e.id
             newPrecio.value = Number(data)
 
-            console.log(new Date(), Number(data), e.name, e.coinId);
+            console.log(new Date(), '| Exchange: ', e.name, '| CoinId: ', e.coinId, '| nuevo valor: ', Number(data));
 
             this.precioRepository.create(newPrecio).
                 catch(err => {

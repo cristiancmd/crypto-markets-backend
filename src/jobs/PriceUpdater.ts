@@ -1,8 +1,10 @@
 import {CronJob, cronJob} from '@loopback/cron';
 import {repository} from '@loopback/repository';
-import {Coin, Precio} from '../models';
+import {Coin} from '../models';
 import {UserRepository} from '../repositories';
+import {Exchange} from './../models/exchange.model';
 import {CoinRepository} from './../repositories/coin.repository';
+import {ExchangeRepository} from './../repositories/exchange.repository';
 import {PrecioRepository} from './../repositories/precio.repository';
 import {UserCoinRepository} from './../repositories/user-coin.repository';
 
@@ -15,42 +17,30 @@ export class PriceUpdater extends CronJob {
         @repository(PrecioRepository) public precioRepository: PrecioRepository,
         @repository(UserCoinRepository) public usercoinRepo: UserCoinRepository,
         @repository(UserRepository) public userRepository: UserRepository,
-
+        @repository(ExchangeRepository) public exchangeRepository: ExchangeRepository
 
     ) {
 
         super({
             name: 'job-C',
             onTick: async () => {
-                const coins: Coin[] = await coinRepository.find();
-                const precios: Precio[] = await precioRepository.find(
-                    {where: {date: {gt: new Date(Date.now() - 60000)}}});
-
-
                 console.log(new Date(), 'Ejecutando price updater');
-                // console.log(coins)
-                // console.log(precios)
-                if (precios.length > 0) {
-                    coins.forEach(coin => {
-                        let cant = 0; let sum = 0;
-                        precios.forEach(precio => {
-                            // eslint-disable-next-line eqeqeq
-                            if (precio.coinId == coin.id && precio.value > 0) {
-                                sum += precio.value
-                                cant++;
-                            }
+                const coins: Coin[] = await coinRepository.find();
 
-                        })
+                const exchanges: Exchange[] = await exchangeRepository.find({
+                    fields: {script: false}
+                });
+                const average = (arr: any[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
-                        if (cant > 0) {
-                            const val = Number(Math.floor((sum / cant) * 100) / 100)
-                            this.updateData(coin, val).catch(e => console.log(e))
-                            console.log(val, ' ACTUALIZADO', coin.name)
+                coins.forEach(coin => {
+                    const arrEx = exchanges.filter(ex => ex.coinId == coin.id);
+                    const result = average(arrEx.map(arr => arr.lastPrice));
+                    const val = Number(Math.floor((result) * 100) / 100)
+                    this.updateData(coin, val);
 
-                        }
+                })
 
-                    })
-                }
+
 
             },
 
@@ -65,6 +55,8 @@ export class PriceUpdater extends CronJob {
             const newCoin = new Coin
             newCoin.avgPrice = Number(val);
             await this.coinRepository.updateById(coin.id, newCoin)
+            console.log(new Date(), 'Actualizada: ', coin.name, ': ', val);
+
 
         } catch (error) {
             console.log(error);
