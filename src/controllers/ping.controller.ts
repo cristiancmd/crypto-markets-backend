@@ -60,6 +60,7 @@ export class PingController {
 
   ): Promise<any> {
 
+    if (texto.length < 1) return 0;
 
     return await this.runScript(texto)
 
@@ -68,16 +69,16 @@ export class PingController {
 
 
   async runScript(script: string): Promise<number> {
-
     try {
       return await new Promise(resolve => eval("(function(returnCallback){" + script + "})")((data: any) => {
-
+        console.log('Testeando script ----');
         resolve(data);
 
       }))
 
     } catch (error) {
       console.log('Test: error en script ----');
+      return 0;
 
     }
     return 0;

@@ -56,6 +56,11 @@ export class MyCronJob extends CronJob {
                     return;
                 })
 
+            let ex = new Exchange;
+            ex.lastPrice = newPrecio.value;
+
+            this.exchangeRepository.updateById(newPrecio.exchangeId, ex).catch(e => console.log(e)
+            )
 
         }
         )

@@ -28,7 +28,12 @@ export class Exchange extends Entity {
     type: 'string',
   })
   coinId?: string;
-  
+
+  @property({
+    type: 'number',
+  })
+  lastPrice?: number;
+
 
   constructor(data?: Partial<Exchange>) {
     super(data);
