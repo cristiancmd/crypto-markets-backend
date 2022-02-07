@@ -15,7 +15,6 @@ export class MailReseter extends CronJob {
     super({
       name: 'job-E',
       onTick: async () => {
-        console.log(new Date(), '-------------Reseteando mails restantes en usuarios ------------');
 
         const users: User[] = await userRepo.find({fields: {id: true, email: true, remainingmails: true, premium: true}});
 
@@ -23,6 +22,7 @@ export class MailReseter extends CronJob {
 
         let suserIds = users.filter(u => !u.premium).map(u => u.id)
 
+        console.log(new Date(), '-------------Reseteando mails restantes en usuarios ------------');
         console.log('Premium users:', puserIds);
         console.log('Standard users', suserIds);
 

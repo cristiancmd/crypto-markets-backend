@@ -53,7 +53,7 @@ export class MailNotifier extends CronJob {
       },
 
       runOnInit: true,
-      cronTime: '*/2 * * * *',
+      cronTime: '*/1 * * * *',
 
       start: true,
     });
@@ -80,7 +80,7 @@ export class MailNotifier extends CronJob {
       to: ucoin.email, // list of receivers
       subject: `Alerta para su moneda: ${coin.name} `, // Subject line
       text: `Moneda: ${coin.name} ; Valor:${coin.avgPrice} `, // plain text body
-      html: `<b>Moneda: ${coin.name} ha alcanzado el valor: $${coin.avgPrice} en ${date} </b>`, // html body
+      html: `<b>Moneda: ${coin.name} ha alcanzado el valor: $${coin.avgPrice} en ${date.toLocaleDateString("es-AR")} </b>`, // html body
     });
 
     console.log("Message sent: %s", info.messageId);
