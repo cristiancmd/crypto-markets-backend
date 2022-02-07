@@ -22,7 +22,7 @@ export class MyCronJob extends CronJob {
 
                 exchanges.forEach(exchange => {
                     this.runScript(<string>exchange.script, exchange).catch((e) =>
-                        console.error(exchange.name, ' : ', console.log(e)));
+                        console.error(exchange.name, ': ', console.log(e)));
                 });
             },
 
