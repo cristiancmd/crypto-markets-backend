@@ -58,6 +58,7 @@
     "@loopback/boot": "^4.0.0",
     "@loopback/core": "^3.0.0",
     "@loopback/cron": "^0.7.0",
+    "@loopback/logging": "^0.7.1",
     "@loopback/repository": "^4.0.0",
     "@loopback/rest": "^11.0.0",
     "@loopback/rest-explorer": "^4.0.0",
@@ -71,6 +72,7 @@
     "loopback-connector-rest": "^3.7.0",
     "mercadopago": "^1.5.12",
     "nodemailer": "^6.7.2",
+    "puppeteer": "^13.2.0",
     "tslib": "^2.0.0",
     "xmlhttprequest": "^1.8.0"
   },

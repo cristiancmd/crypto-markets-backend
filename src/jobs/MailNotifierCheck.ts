@@ -1,4 +1,6 @@
+import {inject} from '@loopback/core';
 import {CronJob, cronJob} from '@loopback/cron';
+import {LoggingBindings, WinstonLogger} from '@loopback/logging';
 import {repository} from '@loopback/repository';
 import {Coin, User, UserCoin} from '../models';
 import {CoinRepository, UserCoinRepository, UserRepository} from '../repositories';
@@ -7,10 +9,12 @@ import {CoinRepository, UserCoinRepository, UserRepository} from '../repositorie
 @cronJob()
 export class MailNotifier extends CronJob {
 
-
+  @inject(LoggingBindings.WINSTON_LOGGER)
+  private logger: WinstonLogger
   constructor(@repository(UserCoinRepository) public usercoinRepo: UserCoinRepository,
     @repository(UserRepository) public userRepository: UserRepository,
-    @repository(CoinRepository) public coinRepository: CoinRepository
+    @repository(CoinRepository) public coinRepository: CoinRepository,
+
   ) {
 
     super({
@@ -25,9 +29,7 @@ export class MailNotifier extends CronJob {
         );
         const coins: Coin[] = await coinRepository.find();
         const arrusers = users.map(u => u.id);
-        // console.log(arrusers);
         const usercoins: UserCoin[] = await usercoinRepo.find({where: {userId: {inq: arrusers}, notified: false}});
-        // console.log(usercoins);
 
         const updateusersArr: UserCoin[] = []
 
@@ -36,7 +38,8 @@ export class MailNotifier extends CronJob {
 
             // eslint-disable-next-line eqeqeq
             if (coin.id == uc.coinId && (uc.max && coin.avgPrice && coin.avgPrice > uc.max) || (coin.id == uc.coinId && uc.min && coin.avgPrice && uc.min > coin.avgPrice)) {
-              console.log("enviando mail..", coin.avgPrice, coin.name, coin.id, uc.email);
+              this.logger.log('info', ` Enviando email: ${coin.avgPrice, coin.name, coin.id, uc.email} `);
+
               this.sendMailtoUser(uc, coin);
               //sendmail
               updateusersArr.push(uc);
@@ -83,8 +86,8 @@ export class MailNotifier extends CronJob {
       html: `<b>Moneda: ${coin.name} ha alcanzado el valor: $${coin.avgPrice} en ${date.toLocaleDateString("es-AR")} </b>`, // html body
     });
 
-    console.log("Message sent: %s", info.messageId);
-    console.log("enviado a: ", ucoin.email);
+    this.logger.log('info', ` Mensaje enviado: ${info.messageId} a ${ucoin.email}`);
+
 
 
   }
@@ -95,15 +98,15 @@ export class MailNotifier extends CronJob {
       this.userRepository.findById(uc.userId).then(
         u => {
           let newuser = new User; newuser.remainingmails = u.remainingmails - 1;
-          this.userRepository.updateById(u.id, newuser).catch(e => console.log(e))
-        }).catch(e => console.log(e))
+          this.userRepository.updateById(u.id, newuser).catch(e => this.logger.log('error', e))
+        }).catch(e => this.logger.log('error', e))
 
     })
 
     let ucoins = ucoin.map(uc => uc.id);
     let newucoin = new UserCoin;
     newucoin.notified = true;
-    this.usercoinRepo.updateAll(newucoin, {id: {inq: ucoins}}).catch(e => console.log(e))
+    this.usercoinRepo.updateAll(newucoin, {id: {inq: ucoins}}).catch(e => this.logger.log('error', e))
 
 
   }

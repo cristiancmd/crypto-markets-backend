@@ -1,5 +1,6 @@
 import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
+import {LoggingBindings, WinstonLogger} from '@loopback/logging';
 import {repository} from '@loopback/repository';
 import {get, RequestContext, response, ResponseObject, RestBindings} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
@@ -33,10 +34,15 @@ const MP_URL_RESPONSE: ResponseObject = {
 
 
 export class MercadopagoController {
+  @inject(LoggingBindings.WINSTON_LOGGER)
+  private logger: WinstonLogger
+
   constructor(@inject(RestBindings.Http.CONTEXT) private requestCtx: RequestContext,
     @repository(UserRepository)
-    public userRepository: UserRepository
-  ) { }
+    public userRepository: UserRepository,
+
+  ) {
+  }
 
 
 
@@ -51,7 +57,6 @@ export class MercadopagoController {
     const user: Partial<UserProfile> = {...currentUserProfile};
     const userid = user.sub.split("|")[1] || user.sub.split("|")[0]
 
-    console.log(userid);
 
 
     return {
@@ -79,7 +84,8 @@ export class MercadopagoController {
       user.remainingmails = 99;
       let id = aquery.external_reference.toString();
       await this.userRepository.updateById(id, user);
-      console.log(id, "-------- usuario premium activado --------");
+      this.logger.log('info', `-------- usuario premium activado --------: ${id} `)
+
     }
     return this.requestCtx.response.redirect(`${process.env.API_FRONT_URL}/profile`);
   }
@@ -116,6 +122,7 @@ export class MercadopagoController {
       .create(preference)
       .then(function (response: any) {
         console.log(response.body.external_reference);
+
         console.log(response.body.init_point);
         res = {
           init_point: response.body.init_point,
@@ -123,8 +130,10 @@ export class MercadopagoController {
         }
         return res;
       })
-      .catch(function (error: any) {
-        console.log(error);
+      .catch((error: any) => {
+        // console.log(error);
+        this.logger.log('error', error)
+
       });
 
     return res;

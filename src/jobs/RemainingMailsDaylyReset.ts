@@ -1,4 +1,6 @@
+import {inject} from '@loopback/core';
 import {CronJob, cronJob} from '@loopback/cron';
+import {LoggingBindings, WinstonLogger} from '@loopback/logging';
 import {repository} from '@loopback/repository';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
@@ -6,9 +8,11 @@ import {UserRepository} from '../repositories';
 
 @cronJob()
 export class MailReseter extends CronJob {
+  @inject(LoggingBindings.WINSTON_LOGGER)
+  private logger: WinstonLogger
 
+  constructor(@repository(UserRepository) public userRepo: UserRepository,
 
-  constructor(@repository(UserRepository) public userRepo: UserRepository
 
   ) {
 
@@ -22,10 +26,9 @@ export class MailReseter extends CronJob {
 
         let suserIds = users.filter(u => !u.premium).map(u => u.id)
 
-        console.log(new Date(), '-------------Reseteando mails restantes en usuarios ------------');
-        console.log('Premium users:', puserIds);
-        console.log('Standard users', suserIds);
-
+        this.logger.log('info', `-------------Reseteando mails restantes en usuarios ------------ `)
+        this.logger.log('info', `Premium users: ${puserIds}  `)
+        this.logger.log('info', `Standard users: ${suserIds}  `)
 
 
 
@@ -37,11 +40,12 @@ export class MailReseter extends CronJob {
 
 
         this.userRepo.updateAll(standardUser, {id: {inq: suserIds}}).catch(e => {
-          console.log(e);
+          this.logger.log('error', e)
         })
 
         this.userRepo.updateAll(premiumUser, {id: {inq: puserIds}}).catch(e => {
-          console.log(e);
+          this.logger.log('error', e)
+
         })
 
 

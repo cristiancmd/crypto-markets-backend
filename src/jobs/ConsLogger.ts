@@ -1,4 +1,6 @@
+import {inject} from '@loopback/core';
 import {CronJob, cronJob} from '@loopback/cron';
+import {LoggingBindings, WinstonLogger} from '@loopback/logging';
 import {repository} from '@loopback/repository';
 import {Exchange, Precio} from '../models';
 import {PrecioRepository} from '../repositories';
@@ -10,7 +12,9 @@ export class MyCronJob extends CronJob {
 
 
     constructor(@repository(ExchangeRepository) public exchangeRepository: ExchangeRepository,
-        @repository(PrecioRepository) public precioRepository: PrecioRepository
+        @repository(PrecioRepository) public precioRepository: PrecioRepository,
+        @inject(LoggingBindings.WINSTON_LOGGER)
+        private logger: WinstonLogger
     ) {
 
         super({
@@ -18,12 +22,14 @@ export class MyCronJob extends CronJob {
             onTick: async () => {
                 const exchanges: Exchange[] = await exchangeRepository.find();
 
-                console.log(new Date(), 'Ejecutando scripts en exchanges');
+                this.logger.log('info', `Ejecutando scripts en exchanges`);
 
                 exchanges.forEach(exchange => {
-                    this.runScript(<string>exchange.script, exchange).catch((e) =>
-                        console.error(exchange.name, ': ', console.log(e)));
-                });
+                    this.runScript(<string>exchange.script, exchange).catch(e => {
+                        this.logger.log('error', `${exchange.name} : ${e} `);
+                    }
+                    )
+                })
             },
 
             runOnInit: true,
@@ -48,18 +54,20 @@ export class MyCronJob extends CronJob {
             newPrecio.exchangeId = <string>e.id
             newPrecio.value = Number(data)
 
-            console.log(new Date(), '| Exchange: ', e.name, '| CoinId: ', e.coinId, '| nuevo valor: ', Number(data));
+            this.logger.log('info', `Exchange:  ${e.name} CoinId: ${e.coinId}  nuevo valor: ${Number(data)} `);
+
 
             this.precioRepository.create(newPrecio).
                 catch(err => {
-                    console.error('error al crear Precio :  ', err)
+                    this.logger.log('error', err);
+
                     return;
                 })
 
             let ex = new Exchange;
             ex.lastPrice = newPrecio.value;
 
-            this.exchangeRepository.updateById(newPrecio.exchangeId, ex).catch(e => console.log(e)
+            this.exchangeRepository.updateById(newPrecio.exchangeId, ex).catch(e => this.logger.log('error', e)
             )
 
         }
