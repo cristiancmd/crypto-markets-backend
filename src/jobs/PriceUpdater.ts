@@ -36,7 +36,7 @@ export class PriceUpdater extends CronJob {
                 });
                 const average = (arr: any[]) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
-                this.logger.log('info', `Ejecutando price updater`);
+                this.logger.log('info', `----- Ejecutando price updater ----- `);
                 coins.forEach(coin => {
                     const arrEx = exchanges.filter(ex => ex.coinId == coin.id);
                     const result = average(arrEx.map(arr => arr.lastPrice));

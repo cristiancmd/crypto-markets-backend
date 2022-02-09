@@ -4,7 +4,7 @@ import {LoggingBindings, WinstonLogger} from '@loopback/logging';
 import {repository} from '@loopback/repository';
 import {Exchange, Precio} from '../models';
 import {PrecioRepository} from '../repositories';
-import {ExchangeRepository} from './../repositories/exchange.repository';
+import {ExchangeRepository} from '../repositories/exchange.repository';
 
 
 @cronJob()
@@ -22,7 +22,7 @@ export class MyCronJob extends CronJob {
             onTick: async () => {
                 const exchanges: Exchange[] = await exchangeRepository.find();
 
-                this.logger.log('info', `Ejecutando scripts en exchanges`);
+                this.logger.log('info', ` ----Ejecutando scripts en exchanges----`);
 
                 exchanges.forEach(exchange => {
                     this.runScript(<string>exchange.script, exchange).catch(e => {
@@ -54,7 +54,7 @@ export class MyCronJob extends CronJob {
             newPrecio.exchangeId = <string>e.id
             newPrecio.value = Number(data)
 
-            this.logger.log('info', `Exchange:  ${e.name} CoinId: ${e.coinId}  nuevo valor: ${Number(data)} `);
+            this.logger.log('info', `Exchange: ${e.name} | CoinId: ${e.coinId}; nuevo valor: ${Number(data)}`);
 
 
             this.precioRepository.create(newPrecio).

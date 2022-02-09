@@ -43,8 +43,7 @@ export class MailNotifier extends CronJob {
               this.sendMailtoUser(uc, coin);
               //sendmail
               updateusersArr.push(uc);
-              //actualizar user
-              //actualizar usercoin
+
             }
 
           })

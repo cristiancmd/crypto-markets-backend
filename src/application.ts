@@ -18,10 +18,10 @@ import path from 'path';
 import {format} from 'winston';
 import {JWTAuthenticationStrategy, KEY} from './authentication-strategies';
 import {JWTServiceProvider} from './authentication-strategies/jwt-service';
-import {MyCronJob} from './jobs/ConsLogger';
+import {MyCronJob} from './jobs/ExchangeFetcher';
 import {MailNotifier} from './jobs/MailNotifierCheck';
 import {PriceUpdater} from './jobs/PriceUpdater';
-import {MailReseter} from './jobs/RemainingMailsDaylyReset';
+import {MailReseter} from './jobs/RemainingMailsDailyReset';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
