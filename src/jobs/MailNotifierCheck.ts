@@ -74,7 +74,8 @@ export class MailNotifier extends CronJob {
         pass: process.env.MAILER_PASS, // generated ethereal password
       },
     });
-    const date = new Date();
+    const date = new Date().toLocaleString()
+
 
     // send mail with defined transport object
     const info = await transporter.sendMail({
@@ -82,7 +83,7 @@ export class MailNotifier extends CronJob {
       to: ucoin.email, // list of receivers
       subject: `Alerta para su moneda: ${coin.name} `, // Subject line
       text: `Moneda: ${coin.name} ; Valor:${coin.avgPrice} `, // plain text body
-      html: `<b>Moneda: ${coin.name} ha alcanzado el valor: $${coin.avgPrice} en ${date.toLocaleDateString("es-AR")} </b>`, // html body
+      html: `<b>Moneda: ${coin.name} ha alcanzado el valor: $${coin.avgPrice} en ${date} </b>`, // html body
     });
 
     this.logger.log('info', ` Mensaje enviado: ${info.messageId} a ${ucoin.email}`);

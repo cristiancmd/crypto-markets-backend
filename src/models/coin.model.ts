@@ -41,6 +41,17 @@ export class Coin extends Entity {
   })
   avgPrice?: number;
 
+  @property({
+    type: 'string',
+  })
+  miniChart?: string;
+
+  @property({
+    type: 'Date',
+    default: new Date(Date.now() - (72 * 3600000))
+  })
+  lastChart?: Date;
+
   @hasMany(() => Exchange)
   exchanges: Exchange[];
 

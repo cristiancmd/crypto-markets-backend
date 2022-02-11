@@ -20,6 +20,7 @@ import {JWTAuthenticationStrategy, KEY} from './authentication-strategies';
 import {JWTServiceProvider} from './authentication-strategies/jwt-service';
 import {MyCronJob} from './jobs/ExchangeFetcher';
 import {MailNotifier} from './jobs/MailNotifierCheck';
+import {MiniChartGenerator} from './jobs/MiniChartGenerator';
 import {PriceUpdater} from './jobs/PriceUpdater';
 import {MailReseter} from './jobs/RemainingMailsDailyReset';
 import {MySequence} from './sequence';
@@ -66,36 +67,21 @@ export class CryptomarketsApplication extends BootMixin(
     // Logger
     this.component(LoggingComponent);
 
-    // const myFormat: WinstonFormat = format((info, opts) => {
-    //   console.log(info);
-    //   return false;
-    // })();
+
     const {combine, timestamp, label, printf} = format;
 
     const myFormat = printf(({level, message, timestamp}) => {
       return `${timestamp} ${level}: ${message}`;
     });
 
-    // this
-    //   .bind('logging.winston.formats.myFormat')
-    //   .to(myFormat)
-    //   .apply(extensionFor(WINSTON_FORMAT));
 
-    // this
-    //   .bind('logging.winston.formats.colorize')
-    //   .to(format.colorize())
-    //   .apply(extensionFor(WINSTON_FORMAT));
 
     const consoleTransport = new WinstonTransports.Console({
       level: 'info',
       format: format.combine(format.timestamp(), format.colorize(), format.simple(), format.prettyPrint(), myFormat),
     });
 
-    // const fileTransport = new WinstonTransports.File({
-    //   level: 'info',
-    //   format: format.combine(format.timestamp(), format.colorize(), format.simple()),
-    //   filename: 'combined.log',
-    // });
+
 
     const fileTransport = new WinstonTransports.File({
       level: 'info',
@@ -132,6 +118,10 @@ export class CryptomarketsApplication extends BootMixin(
     this.add(createBindingFromClass(MailNotifier));
 
     this.add(createBindingFromClass(MailReseter));
+
+    this.add(createBindingFromClass(MiniChartGenerator));
+
+
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
