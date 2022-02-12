@@ -5,8 +5,6 @@
 
 # proyecto para IAW
 
-![GitHub top language](https://img.shields.io/github/languages/top/cristiancmd/cryptomarkets)
-![GitHub language count](https://img.shields.io/github/languages/count/cristiancmd/cryptomarkets)
 
 ## App deployada (podria tardar hasta 30 segundos en ingresar la primera vez dadas las limitaciones del servidor gratuito) :
 
