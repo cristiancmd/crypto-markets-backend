@@ -1,9 +1,10 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -13,13 +14,15 @@ import {
   param,
   patch,
   post,
-  requestBody,
+  requestBody
 } from '@loopback/rest';
 import {
   Coin,
-  Exchange,
+  Exchange
 } from '../models';
 import {CoinRepository} from '../repositories';
+
+@authenticate({strategy: 'auth0-jwt'})
 
 export class CoinExchangeController {
   constructor(

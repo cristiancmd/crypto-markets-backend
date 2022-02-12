@@ -1,30 +1,26 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Precio} from '../models';
 import {PrecioRepository} from '../repositories';
+@authenticate({strategy: 'auth0-jwt'})
 
 export class PriceController {
   constructor(
     @repository(PrecioRepository)
-    public precioRepository : PrecioRepository,
-  ) {}
+    public precioRepository: PrecioRepository,
+  ) { }
 
   @post('/precios')
   @response(200, {

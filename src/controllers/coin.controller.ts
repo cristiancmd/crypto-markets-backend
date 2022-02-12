@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -80,6 +81,8 @@ export class CoinController {
     description: 'Coin PATCH success count',
     content: {'application/json': {schema: CountSchema}},
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async updateAll(
     @requestBody({
       content: {
@@ -103,6 +106,8 @@ export class CoinController {
       },
     },
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async findById(
     @param.path.string('id') id: string,
     @param.filter(Coin, {exclude: 'where'}) filter?: FilterExcludingWhere<Coin>
@@ -114,6 +119,8 @@ export class CoinController {
   @response(204, {
     description: 'Coin PATCH success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async updateById(
     @param.path.string('id') id: string,
     @requestBody({
@@ -132,6 +139,8 @@ export class CoinController {
   @response(204, {
     description: 'Coin PUT success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async replaceById(
     @param.path.string('id') id: string,
     @requestBody() coin: Coin,
@@ -143,6 +152,8 @@ export class CoinController {
   @response(204, {
     description: 'Coin DELETE success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.coinRepository.deleteById(id);
   }

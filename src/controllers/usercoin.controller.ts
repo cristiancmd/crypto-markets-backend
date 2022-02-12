@@ -63,6 +63,8 @@ export class UsercoinController {
     description: 'UserCoin model count',
     content: {'application/json': {schema: CountSchema}},
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async count(
     @param.where(UserCoin) where?: Where<UserCoin>,
   ): Promise<Count> {
@@ -114,6 +116,7 @@ export class UsercoinController {
       },
     },
   })
+  @authenticate({strategy: 'auth0-jwt'})
 
   async find(
     @param.filter(UserCoin) filter?: Filter<UserCoin>,
@@ -126,6 +129,8 @@ export class UsercoinController {
     description: 'UserCoin PATCH success count',
     content: {'application/json': {schema: CountSchema}},
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async updateAll(
     @requestBody({
       content: {
@@ -149,6 +154,8 @@ export class UsercoinController {
       },
     },
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async findById(
     @param.path.string('id') id: string,
     @param.filter(UserCoin, {exclude: 'where'}) filter?: FilterExcludingWhere<UserCoin>
@@ -160,6 +167,8 @@ export class UsercoinController {
   @response(204, {
     description: 'UserCoin PATCH success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async updateById(
     @param.path.string('id') id: string,
     @requestBody({
@@ -178,6 +187,8 @@ export class UsercoinController {
   @response(204, {
     description: 'UserCoin PUT success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async replaceById(
     @param.path.string('id') id: string,
     @requestBody() userCoin: UserCoin,
@@ -189,6 +200,8 @@ export class UsercoinController {
   @response(204, {
     description: 'UserCoin DELETE success',
   })
+  @authenticate({strategy: 'auth0-jwt'})
+
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.userCoinRepository.deleteById(id);
   }
